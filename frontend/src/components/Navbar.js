@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
   const navigate = useNavigate();
@@ -9,6 +10,12 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
   // Extract the email from the JSON data
   const email = userData ? userData.user : '';
 
+
+  const [isBlack, setIsBlack] = useState(false);
+  const toggleBackground = () => {
+    setIsBlack(!isBlack);
+    document.body.style.backgroundColor = isBlack ? "white" : "green";
+  };
   return (
     <header>
       <div className="container">
@@ -20,8 +27,10 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
         <nav>
           {isAuthenticated && (
             <div className="logout-prof">
+              <div style={{ backgroundColor: isBlack ? "green" : "white", padding: "20px" }}>
+      <button onClick={toggleBackground}>Toggle Background</button>
+    </div>
               <span>{email}</span>
-              <Link to="/profile">Profile</Link>
               <button onClick={() =>
                 {localStorage.removeItem("user");localStorage.removeItem("token");navigate("/login")}}>Log out</button>
             </div>
